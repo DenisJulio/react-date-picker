@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CalendarView from "./CalendarView";
 import {
   FloatingFocusManager,
@@ -11,12 +11,21 @@ import {
   useRole,
 } from "@floating-ui/react";
 import calendarIcon from "../assets/icon.svg";
+import MonthSelector from "./MonthSelector";
+import { Month } from "../utils/utils";
+import YearSelector from "./YearSelector";
 
 interface DatepickerProps {
+  minYear: number;
+  maxYear: number;
   onDateSelected: (date: Date) => void;
 }
 
-export default function DatePicker({ onDateSelected }: DatepickerProps) {
+export default function DatePicker({
+  minYear,
+  maxYear,
+  onDateSelected,
+}: DatepickerProps) {
   // floating-ui setup -----------------------------
   const [isOpen, setIsOpen] = useState(false);
 
@@ -40,14 +49,31 @@ export default function DatePicker({ onDateSelected }: DatepickerProps) {
   // ------------------------------------------------
 
   const currentDate = new Date();
-  const [month, setMonth] = useState(currentDate.getMonth());
+  const [month, setMonth] = useState<Month>(
+    Month.fromNumber(currentDate.getMonth())
+  );
   const [year, setYear] = useState(currentDate.getFullYear());
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedDateStr, setSelectedDateStr] = useState<string | undefined>(
     undefined
   );
+  const [nextYearLimitReached, setNextYearLimitReached] = useState(
+    () => year === maxYear && month.id === 11
+  );
+  const [previousYearLimitReached, setPreviousYearLimitReached] = useState(
+    () => year === minYear && month.id === 0
+  );
 
-  const arrowButtonStyle = "m-2 px-2 bg-gray-200 rounded-full";
+  useEffect(
+    () => setNextYearLimitReached(year === maxYear && month.id === 11),
+    [maxYear, month, nextYearLimitReached, year]
+  );
+  useEffect(
+    () => setPreviousYearLimitReached(year === minYear && month.id === 0),
+    [minYear, month, previousYearLimitReached, year]
+  );
+
+  const arrowButtonStyle = "m-2 px-3 py-1 bg-gray-200 rounded-full";
   const footerButtonStyle =
     "px-4 py-2 uppercase text-sm text-blue-500 hover:bg-gray-200";
 
@@ -61,20 +87,28 @@ export default function DatePicker({ onDateSelected }: DatepickerProps) {
   const onSelectDateHandler = (date: Date) => setSelectedDate(date);
 
   const increaseMonth = () => {
-    if (month === 11) {
-      setMonth(0);
+    if (month.id === 11) {
+      if (year === maxYear) {
+        setNextYearLimitReached(!nextYearLimitReached);
+        return;
+      }
+      setMonth(Month.fromNumber(0));
       setYear((year) => year + 1);
     } else {
-      setMonth((month) => month + 1);
+      setMonth((month) => Month.fromNumber(month.id + 1));
     }
   };
 
   const decreaseMonth = () => {
-    if (month === 0) {
-      setMonth(11);
+    if (month.id === 0) {
+      if (year === minYear) {
+        setPreviousYearLimitReached(!previousYearLimitReached);
+        return;
+      }
+      setMonth(Month.fromNumber(11));
       setYear((year) => year - 1);
     } else {
-      setMonth((month) => month - 1);
+      setMonth((month) => Month.fromNumber(month.id - 1));
     }
   };
 
@@ -121,42 +155,36 @@ export default function DatePicker({ onDateSelected }: DatepickerProps) {
                   <span className="block text-xl">{datePickerHeader()}</span>
                 </div>
                 <div className="flex items-center justify-center">
-                  <button className={arrowButtonStyle} onClick={decreaseMonth}>
+                  <button
+                    className={arrowButtonStyle}
+                    onClick={decreaseMonth}
+                    disabled={previousYearLimitReached}
+                  >
                     &lt;
                   </button>
-                  <select
-                    name="months"
-                    onChange={(event) => setMonth(Number(event.target.value))}
-                    value={month}
+                  <div className="border-[1px] p-1 border-gray-400 flex rounded-full">
+                    <MonthSelector
+                      value={month}
+                      onMonthSelected={(month) => setMonth(month)}
+                    />
+                    <YearSelector
+                      value={year}
+                      minYear={minYear}
+                      maxYear={maxYear}
+                      onYearSelected={(year) => setYear(year)}
+                    />
+                  </div>
+                  <button
+                    className={arrowButtonStyle}
+                    onClick={increaseMonth}
+                    disabled={nextYearLimitReached}
                   >
-                    <option value="0">January</option>
-                    <option value="1">February</option>
-                    <option value="2">March</option>
-                    <option value="3">April</option>
-                    <option value="4">May</option>
-                    <option value="5">June</option>
-                    <option value="6">July</option>
-                    <option value="7">August</option>
-                    <option value="8">September</option>
-                    <option value="9">October</option>
-                    <option value="10">November</option>
-                    <option value="11">December</option>
-                  </select>
-                  <input
-                    className="ml-3 w-16"
-                    type="number"
-                    value={year}
-                    onChange={(event) => setYear(Number(event.target.value))}
-                    min="1900"
-                    max="2100"
-                  ></input>
-                  <button className={arrowButtonStyle} onClick={increaseMonth}>
                     &gt;
                   </button>
                 </div>
                 <CalendarView
                   year={year}
-                  month={month}
+                  month={month.id}
                   selectedDate={selectedDate}
                   onDateClicked={onSelectDateHandler}
                 />

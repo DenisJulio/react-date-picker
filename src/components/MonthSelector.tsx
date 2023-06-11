@@ -1,37 +1,23 @@
 import { Month, months } from "../utils/utils";
+import "../css/MonthSelector.sass";
+import ListSelector from "./ListSelector";
 
 interface MonthSelectorProps {
+  value: Month;
   onMonthSelected: (month: Month) => void;
 }
 
-export default function MonthSelector({ onMonthSelected }: MonthSelectorProps) {
-  const cellStyle = "p-2 text-center hover:bg-gray-200 cursor-pointer";
-
+export default function MonthSelector({
+  value,
+  onMonthSelected,
+}: MonthSelectorProps) {
   return (
     <>
-      <table>
-        <tr>
-          {months
-            .filter((_, i) => i < 4)
-            .map((month) => (
-              <td className={cellStyle} onClick={() => onMonthSelected(month)}>{month.short}</td>
-            ))}
-        </tr>
-        <tr>
-          {months
-            .filter((_, i) => i >= 4 && i < 8)
-            .map((month) => (
-              <td className={cellStyle} onClick={() => onMonthSelected(month)}>{month.short}</td>
-            ))}
-        </tr>
-        <tr>
-          {months
-            .filter((_, i) => i >= 8)
-            .map((month) => (
-              <td className={cellStyle} onClick={() => onMonthSelected(month)}>{month.short}</td>
-            ))}
-        </tr>
-      </table>
+      <ListSelector
+        labels={months.map((month) => month.str)}
+        value={value.str}
+        onItemSelected={(_, index) => onMonthSelected(Month.fromNumber(index as number))}
+      />
     </>
   );
 }

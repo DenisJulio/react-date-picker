@@ -1,0 +1,20 @@
+.outer
+    overflow: hidden
+
+.inner
+    overflow-x: hidden
+    overflow-y: scroll
+
+.text-button
+    transition: background-color 0.3s ease
+
+.pop
+    animation: popUp 0.3s ease-out
+
+@keyframes popUp
+    0%
+        transform: scale(0)
+        opacity: 0
+    100%
+        transform: scale(1)
+        opacity: 1
