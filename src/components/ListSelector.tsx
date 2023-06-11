@@ -138,7 +138,7 @@ export default function ListSelector({
               style={floatingStyles}
               {...getFloatingProps()}
             >
-              <div className={`outer rounded-xl min-w-fit ${tw ?? "w-[8rem]"} shadow-lg bg-white border-gray-400 border-[1px] pop`}>
+              <div className={`outer rounded-2xl min-w-fit ${tw ?? "w-[8rem]"} shadow-lg bg-white border-gray-500 border-[1px] pop`}>
                 <div className="inner min-h-fit max-h-[8rem] flex flex-col">
                   <FloatingList elementsRef={elementsRef} labelsRef={labelsRef}>
                     {labels.map((label) => (
@@ -171,6 +171,7 @@ function ListOption({ label }: { label: string }) {
       tabIndex={isActive ? 0 : -1}
       style={{
         fontWeight: isSelected ? "bold" : "",
+        color: isSelected ? "#0ea5e9" : ""
       }}
       className="px-3 text-center py-1 h-[2rem] "
       {...getItemProps({

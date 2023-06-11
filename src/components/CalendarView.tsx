@@ -9,7 +9,7 @@ export default function CalendarView({
 
   const cellStyle =
     "m-2 p-1 min-w-[2.5em] h-[40px] min-h-[40px] max-h-0 max-w-0 text-center cursor-pointer rounded-full";
-  const cellSelectedStyle = "hover:bg-blue-500 bg-blue-300";
+  const cellSelectedStyle = "bg-blue-300";
   const cellUnselectedStyle = "hover:bg-gray-200";
   const headerStyle =
     "m-2 p-1 min-w-[2.5em] h-[40px] min-h-[40px] max-h-0 max-w-0 text-center";
@@ -97,7 +97,7 @@ export default function CalendarView({
       <thead>
         <tr>
           {weekDays.map((day) => {
-            const dayStr = day.slice(0, 3);
+            const dayStr = day.slice(0, 1);
             return (
               <th className={headerStyle} key={day}>
                 {dayStr}

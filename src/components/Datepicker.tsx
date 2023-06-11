@@ -14,6 +14,10 @@ import calendarIcon from "../assets/icon.svg";
 import MonthSelector from "./MonthSelector";
 import { Month } from "../utils/utils";
 import YearSelector from "./YearSelector";
+import {
+  MdArrowBackIosNew,
+  MdArrowForwardIos,
+} from "react-icons/md";
 
 interface DatepickerProps {
   minYear: number;
@@ -73,9 +77,9 @@ export default function DatePicker({
     [minYear, month, previousYearLimitReached, year]
   );
 
-  const arrowButtonStyle = "m-2 px-3 py-1 bg-gray-200 rounded-full";
+  const arrowButtonStyle = `m-2 p-2 border-[1px] rounded-full`;
   const footerButtonStyle =
-    "px-4 py-2 uppercase text-sm text-blue-500 hover:bg-gray-200";
+    "px-4 py-2 uppercase text-blue-500 rounded-full hover:bg-gray-200";
 
   const datePickerHeader = (): string =>
     selectedDate
@@ -147,7 +151,7 @@ export default function DatePicker({
               aria-describedby={descriptionId}
               {...getFloatingProps()}
             >
-              <div className="flex flex-col w-min border-[1px] shadow-lg rounded-lg bg-white filter-none">
+              <div className="flex flex-col w-min border-[1px] rounded-2xl bg-white filter-none">
                 <div className="mx-2 my-3 px-1">
                   <span className="block text-sm">
                     {selectedDate?.getFullYear() ?? ""}
@@ -156,13 +160,21 @@ export default function DatePicker({
                 </div>
                 <div className="flex items-center justify-center">
                   <button
-                    className={arrowButtonStyle}
+                    className={`${arrowButtonStyle} ${
+                      previousYearLimitReached
+                        ? "border-[rgb(184,184,184,0.38)]"
+                        : "border-gray-500"
+                    }`}
                     onClick={decreaseMonth}
                     disabled={previousYearLimitReached}
                   >
-                    &lt;
+                    <MdArrowBackIosNew
+                      color={
+                        previousYearLimitReached ? "rgb(184,184,184,0.38)" : "rgb(107, 114, 128)"
+                      }
+                    />
                   </button>
-                  <div className="border-[1px] p-1 border-gray-400 flex rounded-full">
+                  <div className="border-[1px] p-1 border-gray-500 flex rounded-full">
                     <MonthSelector
                       value={month}
                       onMonthSelected={(month) => setMonth(month)}
@@ -175,11 +187,19 @@ export default function DatePicker({
                     />
                   </div>
                   <button
-                    className={arrowButtonStyle}
+                    className={`${arrowButtonStyle} ${
+                      nextYearLimitReached
+                        ? "border-[rgb(184,184,184,0.38)]"
+                        : "border-gray-500"
+                    }`}
                     onClick={increaseMonth}
                     disabled={nextYearLimitReached}
                   >
-                    &gt;
+                    <MdArrowForwardIos
+                      color={
+                        nextYearLimitReached ? "rgb(184,184,184,0.38)" : "rgb(107, 114, 128)"
+                      }
+                    />
                   </button>
                 </div>
                 <CalendarView

@@ -9,8 +9,8 @@ function App() {
     <>
       <div className="flex flex-col h-screen items-center justify-center">
         <DatePicker
-          minYear={1900}
-          maxYear={2030}
+          minYear={2023}
+          maxYear={2023}
           onDateSelected={(d) => console.log(d)}
         />
       </div>
