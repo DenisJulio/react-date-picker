@@ -23,6 +23,7 @@ import {
   useListItem,
   offset,
 } from "@floating-ui/react";
+import { MdArrowDropDown } from "react-icons/md";
 
 interface ListSelectorProps {
   value: string;
@@ -129,6 +130,7 @@ export default function ListSelector({
         {...getReferenceProps()}
       >
         {selectedLabel}
+        <MdArrowDropDown className="inline ml-1" />
       </div>
       <ListSelectorContext.Provider value={selectContext}>
         {isOpen && (

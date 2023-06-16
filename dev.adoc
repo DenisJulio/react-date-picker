@@ -1,0 +1,15 @@
+= Development
+
+== Tasks
+
+* [ ] Implement receiving link:https://floating-ui.com/docs/dialog#reusable-dialog-component[dialog anchor as a child component].
+
+* [ ] Implement clear button logic
+
+* [ ] Implement theming
+
+* [ ] Implement link:https://m3.material.io/components/date-pickers/overview[docked Datepicker]
+
+* [ ] Bundle the library for use as a component
+
+
