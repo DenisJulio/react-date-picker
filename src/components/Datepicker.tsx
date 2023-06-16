@@ -153,10 +153,10 @@ export default function DatePicker({
             >
               <div className="flex flex-col w-min border-[1px] rounded-2xl bg-white filter-none">
                 <div className="mx-2 my-3 px-1">
-                  <span className="block text-sm">
+                  <span className="block text-sm min-h-[20px]">
                     {selectedDate?.getFullYear() ?? ""}
                   </span>
-                  <span className="block text-xl">{datePickerHeader()}</span>
+                  <span className="block text-xl min-h-[28px]">{datePickerHeader()}</span>
                 </div>
                 <div className="flex items-center justify-center">
                   <button
